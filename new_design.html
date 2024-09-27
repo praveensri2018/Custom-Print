@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Print Creation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="new_design.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style type="text/css">
+        .highlight {
+            background-color: yellow;
+        }
+
+        .grid-item-template.active {
+            border: 1px dashed #f8504b;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-d9kI19VYJ/mwL1zHDHufclqgNdplGrQTCc7d7q9fzGP+R0FsNl6jUB9T55p8FNBjlYHEDKh7p55JQy3fhXHNeQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.js"
+        integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+        
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+</head>
+
+<body>
+    <form id="Form2" runat="server">
+        <div class="title-header">
+            <h4>Templates for Sales Invoice</h4>
+        </div>
+        <div class="grid-container" id="grid-container">
+            <div class="menu-bar-custom">
+                <div class="controls">
+                    <div class="controls-tab active" data-target="#PageSettings">Page</div>
+                    <div class="controls-tab" data-target="#HeaderSettings">Header</div>
+                    <div class="controls-tab" data-target="#BodySettings">Body</div>
+                    <div class="controls-tab" data-target="#FooterSettings">Footer</div>
+                </div>
+                <div class="horizontal-line"></div>
+                <div class="properties-controls">
+                    <div class="page-size-settings">
+                        <div class="page-setup grid-template-section">
+                            <div class="page-setup-header">
+                                <i class="fa-solid fa-angle-right" id="Page-left"></i>
+                                <i class="fa-solid fa-angle-down" style="display:none;" id="Page-down"></i>
+                                <label class="page-setup-toggle">Page Setup</label>
+                            </div>
+                            <div class="page-size-dropdown">
+                                <select id="page-size-setup">
+                                    <option value="auto">Auto</option>
+                                    <option value="a4">A4</option>
+                                    <option value="letter">Letter</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="page-dimensions" style="display:none;">
+                            <div class="dimension-page grid-template-section">
+                                <label for="page-width">Page Width:</label>
+                                <input type="text" id="page-width" name="pageWidth" value="150" />
+                            </div>
+                            <div class="dimension-page grid-template-section">
+                                <label for="page-height">Page Height:</label>
+                                <input type="text" id="page-height" name="pageHeight" value="200" />
+                            </div>
+                            <div class="dimension-page grid-template-section">
+                                <label for="page-orientation">Page Orientation:</label>
+                                <select id="page-orientation">
+                                    <option value="portrait">Portrait</option>
+                                    <option value="landscape">Landscape</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="header-settings" class="header-settings" style="display:none;">
+                        <div class="header-item grid-template-section">
+                            <label for="header-toggle">Header:</label>
+                            <select id="header-toggle">
+                                <option value="on">On</option>
+                                <option value="off">Off</option>
+                            </select>
+                        </div>
+                        <div class="header-min-height grid-template-section">
+                            <label for="header-min-height">Minimum Height:</label>
+                            <input type="text" id="header-min-height" name="headerMinHeight" value="50" />
+                        </div>
+                    </div>
+                    <div id="body-settings" class="body-settings" style="display:none;">
+                        <div class="body-item grid-template-section">
+                            <label for="body-toggle">Body:</label>
+                            <select id="body-toggle">
+                                <option value="on">On</option>
+                                <option value="off">Off</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="footer-settings" class="footer-settings" style="display:none;">
+                        <div class="footer-item grid-template-section">
+                            <label for="footer-toggle">Footer:</label>
+                            <select id="footer-toggle">
+                                <option value="on">On</option>
+                                <option value="off">Off</option>
+                            </select>
+                        </div>
+                        <div class="footer-min-height grid-template-section">
+                            <label for="footer-min-height">Minimum Height:</label>
+                            <input type="text" id="footer-min-height" name="footerMinHeight" value="50" />
+                        </div>
+                    </div>
+                    <div class="page-controls">
+                        <div class="margin-settings-head grid-template-section">
+                            <div class="margin-header">
+                                <i class="fa-solid fa-angle-right" id="Page-left-margin"></i>
+                                <i class="fa-solid fa-angle-down" style="display:none;" id="Page-down-margin"></i>
+                                <label class="hover-target margin-toggle" data-property="border-radius">Margin</label>
+                            </div>
+                        </div>
+                        <div class="margin-settings-dropdown" style="display:none;">
+                            <div class="margin-values-individual">
+                                <div class="margin-item grid-template-section">
+                                    <label class="hover-target" data-property="margin">Margin Top:</label>
+                                    <input type="number" id="margin-top" value="10" />
+                                </div>
+                                <div class="margin-item grid-template-section">
+                                    <label class="hover-target" data-property="margin">Margin Left: </label>
+                                    <input type="number" id="margin-left" value="10" />
+                                </div>
+                                <div class="margin-item grid-template-section">
+                                    <label class="hover-target" data-property="margin">Margin Right: </label>
+                                    <input type="number" id="margin-right" value="10" />
+                                </div>
+                                <div class="margin-item grid-template-section">
+                                    <label class="hover-target" data-property="margin">Margin Bottom: </label>
+                                    <input type="number" id="margin-bottom" value="10" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-settings">
+                            <div class="border-header grid-template-section">
+                                <div class="border-title">
+                                    <i class="fa-solid fa-angle-right" id="border-toggle-left"></i>
+                                    <i class="fa-solid fa-angle-down" style="display:none;" id="border-toggle-down"></i>
+                                    <label class="hover-target border-toggle" data-property="border-radius">Border</label>
+                                </div>
+                            </div>
+                            <div class="border-options" style="display:none;">
+                                <div class="border-thickness grid-template-section">
+                                    <label class="hover-target" data-property="border">Border Thickness:</label>
+                                    <input type="number" id="border-thickness" value="1" />
+                                </div>
+                                <div class="border-option grid-template-section">
+                                    <label class="hover-target" data-property="border">Border Type:</label>
+                                    <select id="border-type-select">
+                                        <option value="solid">Solid</option>
+                                        <option value="dashed">Dashed</option>
+                                        <option value="dotted">Dotted</option>
+                                    </select>
+                                </div>
+                                <div class="section-border grid-template-section">
+                                    <label class="hover-target" data-property="border">Border Color: </label>
+                                    <input type="color" id="border-color-input" value="#000000" />
+                                </div>
+                                <div class="border-radius-individual">
+                                    <div class="border-radius-item grid-template-section">
+                                        <label class="hover-target" data-property="border-radius">Radius Top-Left:</label>
+                                        <input type="number" id="border-radius-top-left" value="5" />
+                                    </div>
+                                    <div class="border-radius-item grid-template-section">
+                                        <label class="hover-target" data-property="border-radius">Radius Top-Right:</label>
+                                        <input type="number" id="border-radius-top-right" value="5" />
+                                    </div>
+                                    <div class="border-radius-item grid-template-section">
+                                        <label class="hover-target" data-property="border-radius">Radius Bottom-Left:</label>
+                                        <input type="number" id="border-radius-bottom-left" value="5" />
+                                    </div>
+                                    <div class="border-radius-item grid-template-section">
+                                        <label class="hover-target" data-property="border-radius">Radius Bottom-Right: </label>
+                                        <input type="number" id="border-radius-bottom-right" value="5" />
+                                    </div>
+                                </div>
+                                <div class="border-option grid-template-section">
+                                    <label class="hover-target" data-property="border">Border Opacity:</label>
+                                    <input type="range" id="border-opacity" min="0" max="1" step="0.1" value="1" />
+                                </div>
+                                <div class="border-option grid-template-section">
+                                    <label class="hover-target" data-property="border">Border Side: </label>
+                                    <select id="border-side-select muliple-select">
+                                        <option value="all">All</option>
+                                        <option value="top">Top</option>
+                                        <option value="right">Right</option>
+                                        <option value="bottom">Bottom</option>
+                                        <option value="left">Left</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="padding-settings">
+                            <div class="padding-all">
+                                <div class="padding-item grid-template-section">
+                                    <div class="padding-title">
+                                        <i class="fa-solid fa-angle-right" id="padding-toggle-left"></i>
+                                        <i class="fa-solid fa-angle-down" style="display:none;" id="padding-toggle-down"></i>
+                                        <label class="hover-target padding-toggle" data-property="padding">Padding</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="padding-individual" style="display:none;">
+                                <div class="padding-item grid-template-section">
+                                    <label class="hover-target" data-property="padding">Padding Top:</label>
+                                    <input type="number" id="padding-top" value="10" />
+                                </div>
+                                <div class="padding-item grid-template-section">
+                                    <label class="hover-target" data-property="padding">Padding Left: </label>
+                                    <input type="number" id="padding-left" value="10" />
+                                </div>
+                                <div class="padding-item grid-template-section">
+                                    <label class="hover-target" data-property="padding">Padding Right: </label>
+                                    <input type="number" id="padding-right" value="10" />
+                                </div>
+                                <div class="padding-item grid-template-section">
+                                    <label class="hover-target" data-property="padding">Padding Bottom: </label>
+                                    <input type="number" id="padding-bottom" value="10" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-settings" style="display:none;">
+                            <div class="grid-all">
+                                <div class="grid-item grid-template-section">
+                                    <div class="grid-title">
+                                        <i class="fa-solid fa-angle-right" id="grid-toggle-left"></i>
+                                        <i class="fa-solid fa-angle-down" style="display:none;" id="grid-toggle-down"></i>
+                                        <label class="hover-target grid-toggle" data-property="grid">Grid</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-individual" style="display:none;">
+                                <div class="grid-item grid-template-section">
+                                    <label >Grid:</label>
+                                    <select id="grid-option">
+                                        <option value="on">On</option>
+                                        <option value="off">Off</option>
+                                    </select>
+                                </div>
+                                <div class="grid-options-container" id="grid-options-container">
+                                    <div class="grid-item-column grid-template-section">
+                                        <label class="hover-target" data-property="grid">Columns:</label>
+                                        <input type="number" id="grid-columns" value="1" min="1"/>
+                                    </div>
+                                    <div class="grid-item-row grid-template-section">
+                                        <label class="hover-target" data-property="grid">Rows: </label>
+                                        <input type="number" id="grid-rows" value="1" min="1"/>
+                                    </div>
+                                    <div class="grid-item-column-gap grid-template-section">
+                                        <label class="hover-target" data-property="grid">Column Gap (px): </label>
+                                        <input type="number" id="column-gap" value="0" min="0" />
+                                    </div>
+                                    <div class="grid-item-row-gap grid-template-section">
+                                        <label class="hover-target" data-property="padding">Row Gap (px): </label>
+                                        <input type="number" id="row-gap" value="0" min="0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-custom-design">
+                <div class="head-content-custom-design">
+                    <div class="tabs">
+                        <div class="tab active">Home</div>
+                        <div class="tab">Page Properties</div>
+                        <div id="fullscreenBtn">Fullscreen</div>
+                    </div>
+                    <div class="toolbar">
+                        <div class="home-tab">
+                            <select name="font-family" id="font-family">
+                                <option value="Arial">Arial</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Courier New">Courier New</option>
+                            </select>
+                            <select name="font-size" id="font-size">
+                                <option value="8px">8px</option>
+                                <option value="10px">10px</option>
+                                <option value="12px">12px</option>
+                                <option value="14px">14px</option>
+                            </select>
+
+                            <div class="separator"></div>
+                            <span id="text-color" color="#000000"><svg width="25.3" height="16.5" viewBox="0 0 21 13"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg" transform="translate(0, 0.26)">
+                                    <path d="M20 7L18 9L16 7" stroke="black" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <g clip-path="url(#clip0_0_1)">
+                                        <path
+                                            d="M9.6525 10H11L7.37792 0.8075C7.12958 0.309583 6.62917 0 6.0725 0C5.50667 0 5.01458 0.312083 4.75042 0.84625L1 10H2.35417L3.37708 7.5H8.66958L9.6525 10ZM3.88833 6.25L5.88667 1.36542C5.96042 1.21667 6.21083 1.26792 6.23875 1.32L8.1775 6.25H3.88833Z"
+                                            fill="black" />
+                                    </g>
+                                    <rect id="color-rect" y="11" width="12" height="2" fill="#000000" />
+                                    <defs />
+                                </svg></span>
+                            <input type="color" id="color-picker" style="display: none;" />
+                            <span id="bold-btn" class="home-tab bold"><i class="fas fa-bold"></i></span>
+                            <span id="italic-btn" class="home-tab italic"><i class="fas fa-italic"></i></span>
+                            <div class="separator"></div>
+                            <span id="align-left" class="home-tab Alignment active"><i
+                                    class="fas fa-align-left"></i></span>
+                            <span id="align-center" class="home-tab Alignment"><i
+                                    class="fas fa-align-center"></i></span>
+                            <span id="align-right" class="home-tab Alignment"><i class="fas fa-align-right"></i></span>
+                            <span id="align-justify" class="home-tab Alignment"><i
+                                    class="fas fa-align-justify"></i></span>
+
+                            <div class="separator"></div>
+                            <div class="zoom-controls">
+                                <label id="zoomIn">Zoom In</label>
+                                <label id="zoomOut">Zoom Out</label>
+                                <label id="resetZoom">Reset Zoom</label>
+                            </div>
+
+                        </div>
+
+                        <div class="page-tab" style="display: none;">
+                            <label for="margin-size">Margin:</label>
+                            <input type="text" name="margin-size" id="margin-size" value="10px" />
+
+                            <label for="border-size">Border Size:</label>
+                            <input type="text" name="border-size" id="border-size" value="1px" />
+
+                            <label for="padding-size">Padding:</label>
+                            <input type="text" name="padding-size" id="padding-size" value="5px" />
+
+                            <input type="checkbox" id="ruler-toggle" name="ruler-toggle" />
+                            <label for="ruler-toggle">Ruler</label>
+
+                            <label id="header-toggle" for="header-toggle">Header ▼</label>
+                            <div id="header-options-menu" class="line-options">
+                                <div id="edit-header">Edit Header</div>
+                                <div id="clear-header">Clear Header</div>
+                                <div id="header-height">
+                                    Header Height
+                                    <div class="sub-options">
+                                        <div class="sub-option">Auto</div>
+                                        <div class="sub-option">200px (Default)</div>
+                                        <div class="sub-option">300px</div>
+                                        <div class="sub-option">400px</div>
+                                    </div>
+                                </div>
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="auto-page-number-header" />
+                                    <label for="auto-page-number-header">Auto Page Number</label>
+                                </div>
+                            </div>
+                            <label id="footer-toggle" for="footer-toggle">Footer ▼</label>
+                            <div id="footer-options-menu" class="line-options">
+                                <div id="edit-footer">Edit Footer</div>
+                                <div id="clear-footer">Clear Footer</div>
+                                <div id="footer-height">
+                                    Footer Height
+                                    <div class="sub-options">
+                                        <div class="sub-option">Auto</div>
+                                        <div class="sub-option">200px (Default)</div>
+                                        <div class="sub-option">300px</div>
+                                        <div class="sub-option">400px</div>
+                                    </div>
+                                </div>
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="auto-page-number-footer" />
+                                    <label for="auto-page-number-footer">Auto Page Number</label>
+                                </div>
+                            </div>
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            <label for="sticky-footer-toggle">Sticky Footer ▼</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="body-content-custom-design" id="body-content-custom-design">
+                    <div id="PrintArea" class="PrintArea">
+                        <div id="Page-Header" class="Page-Header" ondragover="allowDrop(event)" ondrop="drop(event)">
+                            <label class="editable" contenteditable="false" spellcheck="false">Header Testing</label>
+                        </div>
+                        <div id="Page-Body" class="Page-Body" ondragover="allowDrop(event)" ondrop="drop(event)">
+                            <label class="editable" contenteditable="false" spellcheck="false">Body Testing</label>
+                        </div>
+                        <div id="Page-Footer" class="Page-Footer" ondragover="allowDrop(event)" ondrop="drop(event)">
+                            <label class="editable" contenteditable="false" spellcheck="false">Footer Testing</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-custom">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search" />
+                </div>
+                <div class="available-data">
+                    <!-- Dynamic data from stored procedure like this <div class="data-item">{{Distributor Name}}</div>-->
+                </div>
+                <div class="footer">
+                    <div class="discard">Discard</div>
+                    <div class="save-draft">Save</div>
+                </div>
+                <div class="print-pdf" onclick="printDivWithIframe()">Print</button>
+            </div>
+
+            <iframe id="print-iframe" style="display:none;"></iframe>
+        </div>
+    </form>
+</body>
+<script type="text/javascript">
+
+    var targetMap = {
+        '#PageSettings': '#PrintArea',
+        '#HeaderSettings': '#Page-Header',
+        '#BodySettings': '#Page-Body',
+        '#FooterSettings': '#Page-Footer'
+    };
+
+    $(document).ready(function () {
+
+
+        $('.tab').click(function () {
+            $('.tab').removeClass('active');
+            $(this).addClass('active');
+
+            if ($(this).text() === 'Home') {
+                $('.home-tab').show();
+                $('.home-tab-options').show();
+                $('.page-tab').hide();
+            } else if ($(this).text() === 'Page Properties') {
+                $('.home-tab').hide();
+                $('.home-tab-options').hide();
+                $('.page-tab').show();
+            }
+        });
+
+        $('.controls-tab').click(function () {
+            $('.controls-tab').removeClass('active');
+            $(this).addClass('active');
+            $('.settings-section').hide();
+            var target = $(this).data('target');
+            $('.settings-section, .page-size-settings, .page-dimensions').hide();
+            $(target).show();
+            showGrid();
+            if(target === '#PageSettings') {
+                $('.page-size-settings').show();
+                $('.header-settings').hide();
+                $('.body-settings').hide();
+                $('.footer-settings').hide();
+                $('.grid-settings').hide();
+                loadPageSettings();
+            } else if(target === '#HeaderSettings') {
+                $('.header-settings').show();
+                $('.body-settings').hide();
+                $('.footer-settings').hide();
+                $('.grid-settings').show();
+                loadSettings('#Page-Header');
+            } else if(target === '#BodySettings') {
+                $('.header-settings').hide();
+                $('.body-settings').show();
+                $('.footer-settings').hide();
+                $('.grid-settings').show();
+                loadSettings('#Page-Body');
+            } else if(target === '#FooterSettings') {
+                $('.header-settings').hide();
+                $('.body-settings').hide();
+                $('.footer-settings').show();
+                $('.grid-settings').show();
+                loadSettings('#Page-Footer');
+            }
+            if (target === '#PageSettings' || target === '#HeaderSettings' || target === '#BodySettings' || target === '#FooterSettings') {
+                $('#grid-settings').show();
+            } else {
+                $('#grid-settings').hide();
+            }
+        });
+
+        function showGrid(){
+
+
+            var activeTabTarget = $('.controls-tab.active').data('target');
+            var mappedTarget = targetMap[activeTabTarget] || null;
+            if (mappedTarget) {
+                $('#PrintArea .grid-item-template').removeClass('active');
+                $(mappedTarget + ' .grid-item-template').addClass('active');
+            }
+        }
+
+        $('.svg').click(function () {
+            $('.svg').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('.Alignment').on('click', function () {
+            $('.Alignment').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('.search-bar input').on('input', function () {
+            var query = $(this).val().toLowerCase();
+
+            $('.available-data .data-item').each(function () {
+                var text = $(this).text().toLowerCase();
+                if (text.includes(query)) {
+                    $(this).removeClass('hidden');
+                } else {
+                    $(this).addClass('hidden');
+                }
+            });
+        });
+
+        $('.bold').on('click', function () {
+            $(this).toggleClass('active');
+        });
+
+        $('.italic').on('click', function () {
+            $(this).toggleClass('active');
+        });
+
+        // Show the color picker when clicking on the SVG
+        $("#text-color").on("click", function () {
+            $("#color-picker").trigger('click');
+        });
+
+        // Update the color of <rect> and <span> when a color is selected
+        $("#color-picker").on("input", function () {
+            var color = $(this).val();
+            $("#color-rect").attr("fill", color);  // Update rect color
+            $("#text-color").attr("color", color);  // Update span color attribute
+        });
+
+        function loadsampledata() {
+            var available_date = { "DistributorDetails": [{ "Distributor Name": "ABC Distributors", "Distributor Address": "Shop 123, Shilpam Apts, Chincholi Bunder Road,Chennai,Tamilnadu - 600 001", "Distributor Mobile": "9876543210" }], "ProductDetails": [{ "Product Name": "Milk", "Unit": "Liters", "Batch": "B001", "Quantity": "150", "Price": "1.5", "Amount": "225" }, { "Product Name": "Bread", "Unit": "Pieces", "Batch": "B002", "Quantity": "50", "Price": "0.5", "Amount": "25" }, { "Product Name": "Butter", "Unit": "Grams", "Batch": "B003", "Quantity": "30", "Price": "2.0", "Amount": "60" }] };
+
+            // Clear previous content
+            $(".available-data").empty();
+
+            // Handle Distributor Details
+            var distributorDetails = available_date.DistributorDetails[0];
+            for (var key in distributorDetails) {
+                if (distributorDetails.hasOwnProperty(key)) {
+                    $(".available-data").append('<div class="data-item" draggable="true" ondragstart="drag(event)" value="' + distributorDetails[key] + '" name="' + key + '">{{' + key + '}}' +
+                        '<span class="data-item-svg">' +
+                        '<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                        '<ellipse cx="2.05926" cy="2" rx="2.05926" ry="2" fill="black"/>' +
+                        '<ellipse cx="2.05926" cy="10" rx="2.05926" ry="2" fill="black"/>' +
+                        '<ellipse cx="10.2963" cy="2" rx="2.05926" ry="2" fill="black"/>' +
+                        '<ellipse cx="10.2963" cy="10" rx="2.05926" ry="2" fill="black"/>' +
+                        '</svg></span>' +
+                        '</div>'
+                    );
+                }
+            }
+
+            var productDetails = available_date.ProductDetails;
+
+            $(".available-data").append('<div class="data-item table"  draggable="true" ondragstart="drag(event)"  name="GRN Invoice Table" >{{GRN Invoice Table}}' +
+                '<input type="hidden" id="tabledata-0" value=\'' + JSON.stringify(productDetails) + '\'>' +
+                '<span class="data-item-svg">' +
+                '<svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<ellipse cx="2.05926" cy="2" rx="2.05926" ry="2" fill="black"/>' +
+                '<ellipse cx="2.05926" cy="10" rx="2.05926" ry="2" fill="black"/>' +
+                '<ellipse cx="10.2963" cy="2" rx="2.05926" ry="2" fill="black"/>' +
+                '<ellipse cx="10.2963" cy="10" rx="2.05926" ry="2" fill="black"/>' +
+                '</svg></span>' +
+                '</div>'
+            );
+
+
+        }
+
+        loadsampledata();
+
+        initializeSettings(tempjson);
+
+        $('#padding-toggle-left, #padding-toggle-down, .padding-toggle').on('click', function () {
+            $('#padding-toggle-left').toggle(); // Toggle visibility of the left arrow
+            $('#padding-toggle-down').toggle(); // Toggle visibility of the down arrow
+            $('.padding-individual').toggle(); // Show/hide the padding-individual section
+        });
+
+        // Toggle for page size settings
+        $('#Page-left, #Page-down, .page-setup-toggle').on('click', function () {
+            $('#Page-left').toggle();
+            $('#Page-down').toggle();
+            $('.page-dimensions').toggle();
+        });
+
+        // Toggle for border settings
+        $('#border-toggle-left, #border-toggle-down, .border-toggle').on('click', function () {
+            $('#border-toggle-left').toggle();
+            $('#border-toggle-down').toggle();
+            $('.border-options').toggle();
+        });
+
+        // Toggle for margin settings
+        $('#Page-left-margin, #Page-down-margin, .margin-toggle').on('click', function () {
+            $('#Page-left-margin').toggle();
+            $('#Page-down-margin').toggle();
+            $('.margin-settings-dropdown').toggle(); // Show/hide the margin-settings-dropdown section
+        });
+
+        // Toggle for grid settings
+        $('#grid-toggle-left, #grid-toggle-down, .grid-toggle').on('click', function () {
+            $('#grid-toggle-left').toggle();
+            $('#grid-toggle-down').toggle();
+            $('.grid-individual').toggle();
+        });
+
+    });
+
+    $('#page-size-setup').change(function () {
+        var selectedValue = $(this).val();
+        var width, height;
+
+        switch (selectedValue) {
+            case 'auto':
+                width = 150;
+                height = 200;
+                break;
+            case 'a4':
+                width = 210;  // A4 width in mm
+                height = 297; // A4 height in mm
+                break;
+            case 'letter':
+                width = 216;  // Letter width in mm (8.5 inches)
+                height = 279; // Letter height in mm (11 inches)
+                break;
+            default:
+                width = 0;
+                height = 0;
+        }
+        $('#page-width').val(width);
+        $('#page-height').val(height);
+        $('#PrintArea').css({
+            'width': width + 'mm',
+            'height': height + 'mm'
+        });
+    });
+
+    var scale = 1;
+    var zoomStep = 0.1;
+    var maxZoom = 3; // Maximum zoom level
+    var minZoom = 0.5; // Minimum zoom level
+
+    $('#zoomIn').click(function () {
+        if (scale < maxZoom) {
+            scale += zoomStep;
+            updateZoom();
+        }
+    });
+
+    $('#zoomOut').click(function () {
+        if (scale > minZoom) {
+            scale -= zoomStep;
+            updateZoom();
+        }
+    });
+
+    $('#resetZoom').click(function () {
+        scale = 1;
+        updateZoom();
+    });
+
+    function updateZoom() {
+        $('#PrintArea').css('transform', 'scale(' + scale + ')');
+        $('#PrintArea').css('transform-origin', '0 0'); // Set origin to top-left for better control
+    }
+
+
+    $('#fullscreenBtn').click(function () {
+        var element = document.getElementById("grid-container");
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) { // Firefox
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { // IE/Edge
+                element.msRequestFullscreen();
+            }
+            $('#fullscreenBtn').text('Return Screen'); 
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+            $('#fullscreenBtn').text('Full Screen'); 
+        }
+    });
+
+    // Optionally, you can listen for the fullscreen change and style the element accordingly
+    $(document).on('fullscreenchange webkitfullscreenchange mozfullscreenchange MSFullscreenChange', function () {
+        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+            $('#grid-container').css({
+                width: '100vw',
+                height: '100vh',
+                overflow: 'auto' // Ensure scrolling if content exceeds the screen
+            });
+        } else {
+            $('#grid-container').css({
+                width: '', // Reset to original size
+                height: ''
+            });
+        }
+    });
+
+
+
+    // Function to convert hex to RGBA
+    function hexToRgba(hex, opacity) {
+        var r = parseInt(hex.slice(1, 3), 16),
+            g = parseInt(hex.slice(3, 5), 16),
+            b = parseInt(hex.slice(5, 7), 16);
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity + ')';
+    }
+
+
+    function updateAlignment(alignment) {
+        $('.Alignment').removeClass('active');
+
+        $(`#align-${alignment}`).addClass('active');
+
+        var activeTab = $('.controls-tab.active').data('target');
+        if (activeTab === '#PageSettings') {
+            $('#PrintArea').css({
+                'text-align': alignment
+            });
+        } else if (activeTab === '#HeaderSettings') {
+            $('#Page-Header').css({
+                'text-align': alignment
+            });
+        } else if (activeTab === '#BodySettings') {
+            $('#Page-Body').css({
+                'text-align': alignment
+            });
+        } else if (activeTab === '#FooterSettings') {
+            $('#Page-Footer').css({
+                'text-align': alignment
+            });
+        }
+    }
+
+    // Event listeners for each alignment button
+    $('#align-left').on('click', function () {
+        updateAlignment('left');
+    });
+
+    $('#align-center').on('click', function () {
+        updateAlignment('center');
+    });
+
+    $('#align-right').on('click', function () {
+        updateAlignment('right');
+    });
+
+    $('#align-justify').on('click', function () {
+        updateAlignment('justify');
+    });
+
+
+    var tempjson = {
+        "PrintArea": {
+            "margin": {
+                "top": "0px",
+                "left": "0px",
+                "right": "0px",
+                "bottom": "0px"
+            },
+            "border": {
+                "type": "solid",
+                "color": "#000000",
+                "thickness": "2px",
+                "radius": {
+                    "individual": {
+                        "topLeft": "1px",
+                        "topRight": "2px",
+                        "bottomLeft": "3px",
+                        "bottomRight": "4px",
+                    }
+                },
+                "opacity": 1,
+                "side": "all"
+            },
+            "padding": {
+                "top": "10px",
+                "left": "10px",
+                "right": "10px",
+                "bottom": "10px"
+            },
+            "page_size": {
+                "width": "210mm",
+                "height": "297mm",
+                "pageOrientation": "portrait",
+                "page-size-setup": "A4",
+                "color": "#FFFFFF"
+            }
+        },
+        "PageHeader": {
+            "visibility": "on",
+            "minHeight": "50mm",
+            "padding": {
+                "top": "5px",
+                "left": "10px",
+                "right": "10px",
+                "bottom": "5px"
+            },
+            "margin": {
+                "top": "0px",
+                "left": "0px",
+                "right": "0px",
+                "bottom": "10px"
+            },
+            "border": {
+                "type": "solid",
+                "color": "#000000",
+                "thickness": "1px",
+                "radius": {
+                    "individual": {
+                        "topLeft": "5px",
+                        "topRight": "6px",
+                        "bottomLeft": "7px",
+                        "bottomRight": "8px"
+                    }
+                },
+                "opacity": 1,
+                "side": "all"
+            }
+        },
+        "PageBody": {
+            "visibility": "on",
+            "padding": {
+                "top": "10px",
+                "left": "15px",
+                "right": "15px",
+                "bottom": "10px"
+            },
+            "margin": {
+                "top": "0px",
+                "left": "0px",
+                "right": "0px",
+                "bottom": "0px"
+            },
+            "border": {
+                "type": "solid",
+                "color": "#000000",
+                "thickness": "1px",
+                "radius": {
+                    "individual": {
+                        "topLeft": "9px",
+                        "topRight": "10px",
+                        "bottomLeft": "8px",
+                        "bottomRight": "5px"
+                    }
+                },
+                "opacity": 1,
+                "side": "all"
+            }
+        },
+        "PageFooter": {
+            "visibility": "on",
+            "minHeight": "50mm",
+            "padding": {
+                "top": "6px",
+                "left": "10px",
+                "right": "10px",
+                "bottom": "5px"
+            },
+            "margin": {
+                "top": "0px",
+                "left": "0px",
+                "right": "0px",
+                "bottom": "0px"
+            },
+            "border": {
+                "type": "solid",
+                "color": "#000000",
+                "thickness": "1px",
+                "radius": {
+                    "individual": {
+                        "topLeft": "8px",
+                        "topRight": "7px",
+                        "bottomLeft": "6px",
+                        "bottomRight": "5px",
+                    }
+                },
+                "opacity": 1,
+                "side": "all"
+            }
+        }
+    }
+
+
+    function initializeSettings(data) {
+        // Initialize PrintArea settings
+        if (data.PrintArea) {
+            let printArea = $('#PrintArea');
+
+            // Set Default 
+            printArea.css({
+                'display': 'flex',
+                'flex-direction':'column'
+            });
+
+            // Set Size
+            printArea.css({
+                'width': data.PrintArea.page_size.width,
+                'height': data.PrintArea.page_size.height,
+                'background-color': data.PrintArea.page_size.color,
+            });
+
+            // Set margin
+            printArea.css({
+                'margin-top': data.PrintArea.margin.top,
+                'margin-left': data.PrintArea.margin.left,
+                'margin-right': data.PrintArea.margin.right,
+                'margin-bottom': data.PrintArea.margin.bottom
+            });
+
+            // Set border
+            let borderSide = data.PrintArea.border.side === 'all' ? '' : `-${data.PrintArea.border.side}`;
+            let borderStyle = `${data.PrintArea.border.thickness} ${data.PrintArea.border.type} ${data.PrintArea.border.color}`;
+            printArea.css({
+                [`border${borderSide}`]: borderStyle,
+                'border-top-left-radius': data.PrintArea.border.radius.individual.topLeft,
+                'border-top-right-radius': data.PrintArea.border.radius.individual.topRight,
+                'border-bottom-left-radius': data.PrintArea.border.radius.individual.bottomLeft,
+                'border-bottom-right-radius': data.PrintArea.border.radius.individual.bottomRight
+            });
+
+            // Set padding
+            printArea.css({
+                'padding-top': data.PrintArea.padding.top,
+                'padding-left': data.PrintArea.padding.left,
+                'padding-right': data.PrintArea.padding.right,
+                'padding-bottom': data.PrintArea.padding.bottom
+            });
+        }
+
+        // Initialize PageHeader settings
+        if (data.PageHeader) {
+            let pageHeader = $('#Page-Header');
+            pageHeader.css({
+                'min-height': data.PageHeader.minHeight,
+                'padding-top': data.PageHeader.padding.top,
+                'padding-left': data.PageHeader.padding.left,
+                'padding-right': data.PageHeader.padding.right,
+                'padding-bottom': data.PageHeader.padding.bottom,
+                'margin-top': data.PageHeader.margin.top,
+                'margin-left': data.PageHeader.margin.left,
+                'margin-right': data.PageHeader.margin.right,
+                'margin-bottom': data.PageHeader.margin.bottom,
+            });
+                // Set border (assuming one side or all sides)
+            let borderSide = data.PageHeader.border.side === 'all' ? '' : `-${data.PageHeader.border.side}`;
+            let borderStyle = `${data.PageHeader.border.thickness} ${data.PageHeader.border.type} ${data.PageHeader.border.color}`;
+            pageHeader.css({
+                [`border${borderSide}`]: borderStyle,
+                'border-top-left-radius': data.PageHeader.border.radius.individual.topLeft,
+                'border-top-right-radius': data.PageHeader.border.radius.individual.topRight,
+                'border-bottom-left-radius': data.PageHeader.border.radius.individual.bottomLeft,
+                'border-bottom-right-radius': data.PageHeader.border.radius.individual.bottomRight
+                
+            });
+
+            // Visibility 
+            pageHeader.toggle(data.PageHeader.visibility === 'on');
+        }
+
+        // Initialize PageBody settings
+        if (data.PageBody) {
+            let pageBody = $('#Page-Body');
+
+            // Set Default 
+            pageBody.css({
+                'flex-grow': '1',
+                'overflow':'auto'
+            });
+
+            pageBody.css({
+                'padding-top': data.PageBody.padding.top,
+                'padding-left': data.PageBody.padding.left,
+                'padding-right': data.PageBody.padding.right,
+                'padding-bottom': data.PageBody.padding.bottom,
+                'margin-top': data.PageBody.margin.top,
+                'margin-left': data.PageBody.margin.left,
+                'margin-right': data.PageBody.margin.right,
+                'margin-bottom': data.PageBody.margin.bottom,
+            });
+
+            // Set border (assuming one side or all sides)
+            let borderSide = data.PageBody.border.side === 'all' ? '' : `-${data.PageBody.border.side}`;
+            let borderStyle = `${data.PageBody.border.thickness} ${data.PageBody.border.type} ${data.PageBody.border.color}`;
+            pageBody.css({
+                [`border${borderSide}`]: borderStyle,
+                'border-top-left-radius': data.PageBody.border.radius.individual.topLeft,
+                'border-top-right-radius': data.PageBody.border.radius.individual.topRight,
+                'border-bottom-left-radius': data.PageBody.border.radius.individual.bottomLeft,
+                'border-bottom-right-radius': data.PageBody.border.radius.individual.bottomRight
+            });
+
+            // Visibility
+            pageBody.toggle(data.PageBody.visibility === 'on');
+        }
+        // Initialize PageFooter settings
+        if (data.PageFooter) {
+            let pageFooter = $('#Page-Footer');
+            pageFooter.css({
+                'min-height': data.PageFooter.minHeight,
+                'padding-top': data.PageFooter.padding.top,
+                'padding-left': data.PageFooter.padding.left,
+                'padding-right': data.PageFooter.padding.right,
+                'padding-bottom': data.PageFooter.padding.bottom,
+                'margin-top': data.PageFooter.margin.top,
+                'margin-left': data.PageFooter.margin.left,
+                'margin-right': data.PageFooter.margin.right,
+                'margin-bottom': data.PageFooter.margin.bottom,
+            });
+
+            // Set border (assuming one side or all sides)
+            let borderSide = data.PageFooter.border.side === 'all' ? '' : `-${data.PageFooter.border.side}`;
+            let borderStyle = `${data.PageFooter.border.thickness} ${data.PageFooter.border.type} ${data.PageFooter.border.color}`;
+            pageFooter.css({
+                [`border${borderSide}`]: borderStyle,
+                'border-top-left-radius': data.PageFooter.border.radius.individual.topLeft,
+                'border-top-right-radius': data.PageFooter.border.radius.individual.topRight,
+                'border-bottom-left-radius': data.PageFooter.border.radius.individual.bottomLeft,
+                'border-bottom-right-radius': data.PageFooter.border.radius.individual.bottomRight
+            });
+            // Visibility
+            pageFooter.toggle(data.PageFooter.visibility === 'on');
+        }
+
+        loadPageSettings();
+    }
+
+    function loadPageSettings() {
+        var printArea = $('#PrintArea');
+
+        // Load page width and height
+        $('#page-width').val(parseInt(printArea.css('width')));
+        $('#page-height').val(parseInt(printArea.css('height')));
+
+        // Load page margins
+        $('#margin-top').val(parseInt(printArea.css('margin-top')));
+        $('#margin-right').val(parseInt(printArea.css('margin-right')));
+        $('#margin-bottom').val(parseInt(printArea.css('margin-bottom')));
+        $('#margin-left').val(parseInt(printArea.css('margin-left')));
+
+        // Load border properties
+        $('#border-thickness').val(parseInt(printArea.css('border-width')));
+        $('#border-type-select').val(printArea.css('border-style'));
+        $('#border-color-input').val(rgbToHex(printArea.css('border-color')));
+        //$('#border-opacity').val(parseFloat(printArea.css('border-opacity')));
+        var borderRadius = printArea.css('border-radius').split(' ');
+        $('#border-radius-top-left').val(parseInt(borderRadius[0])); // Top-left
+        $('#border-radius-top-right').val(parseInt(borderRadius[1])); // Top-right
+        $('#border-radius-bottom-right').val(parseInt(borderRadius[2])); // Bottom-right
+        $('#border-radius-bottom-left').val(parseInt(borderRadius[3])); // Bottom-left
+
+        // Load padding properties
+        $('#padding-top').val(parseInt(printArea.css('padding-top')));
+        $('#padding-right').val(parseInt(printArea.css('padding-right')));
+        $('#padding-bottom').val(parseInt(printArea.css('padding-bottom')));
+        $('#padding-left').val(parseInt(printArea.css('padding-left')));
+    }
+    function loadSettings(id) {
+        var pagecontent = $(id);
+
+        // Load minimum height
+        $('#header-min-height').val(parseInt(pagecontent.css('min-height')));
+
+        // Load page margins
+        $('#margin-top').val(parseInt(pagecontent.css('margin-top')));
+        $('#margin-right').val(parseInt(pagecontent.css('margin-right')));
+        $('#margin-bottom').val(parseInt(pagecontent.css('margin-bottom')));
+        $('#margin-left').val(parseInt(pagecontent.css('margin-left')));
+
+        // Load padding
+        $('#padding-top').val(parseInt(pagecontent.css('padding-top')));
+        $('#padding-right').val(parseInt(pagecontent.css('padding-right')));
+        $('#padding-bottom').val(parseInt(pagecontent.css('padding-bottom')));
+        $('#padding-left').val(parseInt(pagecontent.css('padding-left')));
+
+        // Load border radius
+        var borderRadius = pagecontent.css('border-radius').split(' ').map(val => parseInt(val));
+
+        // Set default values assuming it's a single value case
+        var topLeft = borderRadius[0] || 0;
+        var topRight = borderRadius[1] || topLeft;
+        var bottomRight = borderRadius[2] || topLeft;
+        var bottomLeft = borderRadius[3] || topRight;
+
+        // Set the values in the respective input fields
+        $('#border-radius-top-left').val(topLeft);
+        $('#border-radius-top-right').val(topRight);
+        $('#border-radius-bottom-right').val(bottomRight);
+        $('#border-radius-bottom-left').val(bottomLeft);
+
+        // Load border opacity (for simplicity, assuming border opacity is applied via RGBA or filter property)
+        const rgbaColor = pagecontent.css('border-color');
+        const alphaMatch = rgbaColor.match(/rgba?\((\d+), (\d+), (\d+), (\d?.?\d*)\)/);
+        if (alphaMatch) {
+            $('#border-opacity').val(parseFloat(alphaMatch[4]));
+        }
+
+        // Load border thickness (width)
+        $('#border-thickness').val(parseInt(pagecontent.css('border-width')));
+
+        // Load border style (e.g., solid, dashed, dotted, etc.)
+        $('#border-type-select').val(pagecontent.css('border-style'));
+
+        // Load border color (ignoring opacity, setting the color part only)
+        const rgbMatch = rgbaColor.match(/rgba?\((\d+), (\d+), (\d+)/);
+        if (rgbMatch) {
+            const r = rgbMatch[1], g = rgbMatch[2], b = rgbMatch[3];
+            $('#border-color-input').val(`rgb(${r},${g},${b})`);
+        }
+
+        // *** NEW: Load Grid Settings ***
+
+        // Check if the element is using grid display
+        if (pagecontent.css('display') === 'grid') {
+            // Show the grid settings
+            $('.grid-settings').show();
+
+            // Load grid columns and rows
+            var gridColumns = pagecontent.css('grid-template-columns').split(' ').length;
+            var gridRows = pagecontent.css('grid-template-rows').split(' ').length;
+
+            $('#grid-columns').val(gridColumns);
+            $('#grid-rows').val(gridRows);
+
+            // Load column and row gaps
+            $('#column-gap').val(parseInt(pagecontent.css('column-gap')));
+            $('#row-gap').val(parseInt(pagecontent.css('row-gap')));
+
+            // Set the grid option to "on"
+            $('#grid-option').val('on');
+        } else {
+            $('#grid-option').val('off');
+        }
+    }
+    function rgbToHex(rgb) {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        return "#" +
+            ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+            ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +    
+            ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+    }
+
+    function printDivWithIframe() {
+        var content = document.getElementById('body-content-custom-design').innerHTML;
+        var iframe = document.getElementById('print-iframe');
+        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(`
+            <html>
+                <head>
+                    <style>
+                        /* Add any print-specific styles here */
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+            </html>
+        `);
+        iframeDoc.close();
+        iframe.contentWindow.focus();  
+        iframe.contentWindow.print();
+    }
+
+
+    $('#header-toggle, #header-min-height').on('input change', updateHeaderSettings);
+    $('#footer-toggle, #footer-min-height').on('input change', updateFooterSettings);
+    $('#body-toggle').on('input change', updateBodySettings);
+    $('#margin-top, #margin-left, #margin-right, #margin-bottom').on('input change', updateMargins);
+    $('#border-thickness, #border-type-select, #border-color-input, #border-radius-top-left, #border-radius-top-right, #border-radius-bottom-left, #border-radius-bottom-right, #border-opacity').on('input change', updateBorders);
+    $('#padding-top, #padding-left, #padding-right, #padding-bottom').on('input change', updatePadding);
+
+    function updateHeaderSettings() {
+        var headerStatus = $('#header-toggle').val();
+        var headerHeight = $('#header-min-height').val();
+
+        if (headerStatus === 'off') {
+            $('#Page-Header').hide();
+        } else {
+            $('#Page-Header').show();
+            $('#Page-Header').css('min-height', headerHeight + 'px');
+        }
+    }
+
+    // Function to update footer settings
+    function updateFooterSettings() {
+        var footerStatus = $('#footer-toggle').val();
+        var footerHeight = $('#footer-min-height').val();
+
+        if (footerStatus === 'off') {
+            $('#Page-Footer').hide();
+        } else {
+            $('#Page-Footer').show();
+            $('#Page-Footer').css('min-height', footerHeight + 'px');
+        }
+    }
+
+    // Function to update body settings
+    function updateBodySettings() {
+        var bodyStatus = $('#body-toggle').val();
+
+        if (bodyStatus === 'off') {
+            $('#Page-Body').hide();
+        } else {
+            $('#Page-Body').show();
+        }
+    }
+
+    function updateMargins() {
+        var activeTabTarget = $('.controls-tab.active').data('target');
+
+        var mappedTarget = targetMap[activeTabTarget] || null;
+
+        var marginTop = $('#margin-top').val();
+        var marginLeft = $('#margin-left').val();
+        var marginRight = $('#margin-right').val();
+        var marginBottom = $('#margin-bottom').val();
+
+        $(mappedTarget).css({
+            'margin-top': marginTop + 'px',
+            'margin-left': marginLeft + 'px',
+            'margin-right': marginRight + 'px',
+            'margin-bottom': marginBottom + 'px'
+        });
+    }
+
+    // Function to update borders
+    function updateBorders() {
+        var activeTabTarget = $('.controls-tab.active').data('target');
+        var mappedTarget = targetMap[activeTabTarget] || null;
+        var borderThickness = $('#border-thickness').val();
+        var borderType = $('#border-type-select').val();
+        var borderColor = $('#border-color-input').val();
+        var borderRadiusTopLeft = $('#border-radius-top-left').val();
+        var borderRadiusTopRight = $('#border-radius-top-right').val();
+        var borderRadiusBottomLeft = $('#border-radius-bottom-left').val();
+        var borderRadiusBottomRight = $('#border-radius-bottom-right').val();
+        //var borderOpacity = $('#border-opacity').val();
+
+        $(mappedTarget).css({
+            'border-width': borderThickness + 'px',
+            'border-style': borderType,
+            'border-color': borderColor,
+            'border-top-left-radius': borderRadiusTopLeft + 'px',
+            'border-top-right-radius': borderRadiusTopRight + 'px',
+            'border-bottom-left-radius': borderRadiusBottomLeft + 'px',
+            'border-bottom-right-radius': borderRadiusBottomRight + 'px',
+            //'opacity': borderOpacity
+        });
+    }
+
+    // Function to update padding
+    function updatePadding() {
+        var activeTabTarget = $('.controls-tab.active').data('target');
+        var mappedTarget = targetMap[activeTabTarget] || null;
+        var paddingTop = $('#padding-top').val();
+        var paddingLeft = $('#padding-left').val();
+        var paddingRight = $('#padding-right').val();
+        var paddingBottom = $('#padding-bottom').val();
+
+        $(mappedTarget).css({
+            'padding-top': paddingTop + 'px',
+            'padding-left': paddingLeft + 'px',
+            'padding-right': paddingRight + 'px',
+            'padding-bottom': paddingBottom + 'px'
+        });
+    }
+
+    // Function to allow dropping
+    function allowDrop(event) {
+        event.preventDefault();
+        console.log('allowDrop');
+    }
+
+    // Function to start dragging
+    function drag(event) {
+        const target = event.target;
+        const name = target.getAttribute("name");
+        const value = target.getAttribute("value");
+        const temp = target.getAttribute("temp");
+        event.dataTransfer.setData("text/plain", JSON.stringify({ name, value }));
+
+    }
+
+    // Function to handle the drop
+    function drop(event) {
+        event.preventDefault();
+        const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+
+        if (data.name === 'GRN Invoice Table') {
+            // Create a table dynamically
+            const productDetails = JSON.parse(document.getElementById('tabledata-0').value);
+
+            const table = document.createElement('table');
+            table.className = 'editable-table'; // Optional class name for styling
+
+            // Create the table head
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            
+            // Dynamically create headers from keys in the first product detail
+            const headers = Object.keys(productDetails[0]);
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.innerText = headerText;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create the table body
+            const tbody = document.createElement('tbody');
+            productDetails.forEach(product => {
+                const row = document.createElement('tr');
+                Object.values(product).forEach(value => {
+                    const td = document.createElement('td');
+                    td.innerText = value;
+                    row.appendChild(td);
+                });
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+
+            // Append the created table to the target div
+            event.target.appendChild(table);
+
+        } else {
+            // Handle normal span drop (non-table data)
+            const newSpan = document.createElement('span');
+            newSpan.className = 'editable';
+            newSpan.id = data.name.replace(/\s+/g, '_');
+            newSpan.innerText = `${data.name}: ${data.value}`;
+            newSpan.contentEditable = false;
+            newSpan.spellcheck = false;
+            newSpan.draggable = true;
+            newSpan.style.marginLeft = '10px';
+            newSpan.setAttribute("name", data.name);
+            newSpan.setAttribute("value", data.value);
+            newSpan.setAttribute("ondragstart", "drag(event)");
+            newSpan.setAttribute("temp", "true");
+            event.target.appendChild(newSpan);
+        }
+        console.log('drop');
+    }
+
+    // Click and delete functionality using jQuery
+    $(document).on('click', '.editable', function(event) {
+        const $target = $(this);
+
+        if (event.detail === 1) {
+            // Single click: Highlight the text
+            $target.toggleClass('highlight'); // Toggle highlight on single click
+        } else if (event.detail === 2) {
+            // Double click: Enable editing
+            $target.attr('contenteditable', true).focus(); // Focus on the editable span
+        }
+    });
+
+    $(document).on('keydown', function(event) {
+        // Delete or Backspace key functionality
+        if (event.key === "Delete" || event.key === "Backspace") {
+            // Check for highlighted elements
+            $('.editable.highlight').remove(); // Remove highlighted spans
+        }
+        // Esc key functionality to cancel highlight and edit mode
+        if (event.key === "Escape") { // Use "Escape" instead of "Esc" for clarity
+            $('.editable.highlight').each(function() {
+                $(this).removeClass('highlight'); // Remove highlight class
+                $(this).attr('contenteditable', false); // Set contentEditable to false
+            });
+        }
+    });
+
+    // Function to handle clicks on the document
+    $(document).on('click', function(event) {
+        // Check if the click is outside the editable spans
+        if (!$(event.target).closest('.editable').length) {
+            // If the click is outside, remove highlight and set contentEditable to false
+            $('.editable.highlight').each(function() {
+                $(this).removeClass('highlight'); // Remove highlight class
+                $(this).attr('contenteditable', false); // Set contentEditable to false
+            });
+        }
+    });
+
+    document.getElementById('grid-option').addEventListener('change', function() {
+        var gridOptionsContainer = document.getElementById('grid-options-container');
+        if (this.value === 'on') {
+            gridOptionsContainer.style.display = 'block'; // Show the options
+        } else {
+            gridOptionsContainer.style.display = 'none'; // Hide the options
+        }
+    });
+
+    function updateGrid() {
+        var activeTabTarget = $('.controls-tab.active').data('target');
+
+        var mappedTarget = targetMap[activeTabTarget] || null;
+        // Get the grid settings from the input fields
+        var columns = $('#grid-columns').val();
+        var rows = $('#grid-rows').val();
+        var colGap = $('#column-gap').val();
+        var rowGap = $('#row-gap').val();
+
+        // Apply grid settings to the target area
+        $(mappedTarget).css({
+            'display': 'grid',
+            'grid-template-columns': `repeat(${columns}, 1fr)`,
+            'grid-template-rows': `repeat(${rows}, 1fr)`,
+            'column-gap': colGap + 'px',
+            'row-gap': rowGap + 'px'
+        });
+        $(mappedTarget).empty();
+        for (let i = 0; i < columns * rows; i++) {
+            $(mappedTarget).append('<div class="'+ `${columns}-grid`+' grid-item-template active"></div>');
+        }
+    }
+
+    // Attach event listeners to grid inputs for live updates
+    $('#grid-columns, #grid-rows, #column-gap, #row-gap').on('input', function() {
+        updateGrid();
+    });
+
+
+    // Optionally, listen for changes in the grid on/off toggle
+    $('#grid-option').on('change', function() {
+        var gridOn = $(this).val() === 'on';
+        if (gridOn) {
+            updateGrid();  // Apply grid settings
+        } else {
+            // Remove the grid layout
+            $('#PrintArea').css({
+                'display': '',
+                'grid-template-columns': '',
+                'grid-template-rows': '',
+                'column-gap': '',
+                'row-gap': ''
+            });
+        }
+    });
+
+</script>
+
+</html>

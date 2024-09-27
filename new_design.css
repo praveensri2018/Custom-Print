@@ -1,0 +1,503 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 0.9fr 3fr 0.7fr; 
+    grid-template-rows: auto 1fr; 
+    height: 100vh;
+    gap: 10px; 
+    overflow:hidden !important;
+}
+
+.grid-container > *:not(.title-header) {
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title-header {
+    grid-column: 1 / span 3;
+    text-align: center;
+}
+
+.menu-bar-custom {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+}
+
+.content-custom-design {
+    background-color: #f9f9f9;
+    padding: 5px;
+}
+
+.sidebar-custom {
+    background-color: #e4e4e4;
+    padding: 5px;
+}
+
+.search-bar {
+    padding: 5px 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.search-bar input {
+    width: 100%;
+
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.available-data {
+    padding: 5px 5px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.data-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    background-color: #f4f4f4;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+}
+
+.footer div {
+    padding: 5px 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.footer div.discard {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.footer div.save-draft {
+    background-color: #f39c12;
+    color: white;
+}
+.print-pdf{
+    background-color: #37f312;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+/* CSS for the content-custom-design start */
+.content-custom-design {
+    display: grid;
+    grid-template-rows: 0.2fr 0.2fr 3fr; /* Define the row heights */
+    gap: 10px; /* Optional: Add space between rows */
+}
+
+.head-content-custom-design {
+    padding: 10px;
+}
+
+
+/* CSS for the content-custom-design end */
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    padding: 8px 8px;
+    cursor: pointer;
+}
+
+:root {
+    --white: #fff;
+    --active-color: #41B3A2; /* Adjust to desired active tab color */
+}
+
+
+.head-content-custom-design .tabs {
+    display: flex;
+    align-items: center;
+    height: 40px; /* Same height for uniformity */
+    background-color: var(--white);
+    /*border-radius: 10px;*/
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+    border: 5px solid var(--white);
+    border-bottom-width: 0px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    justify-content: flex-start;
+}
+
+.head-content-custom-design .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    position: relative;
+    z-index: 2;
+    padding: 10px;
+    font-weight: normal;
+    color: #000; /* Default text color */
+}
+
+.head-content-custom-design .tab.active {
+    
+    border-radius: 0px;
+    background-color: var(--active-color);
+    font-weight: bold;
+    color: #1E201E; /* Active text color */
+    transform: scale(1.1); /* Slightly increase the size of the active tab */
+}
+
+.head-content-custom-design .tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    background: var(--active-color);
+    transition: width 0.3s ease;
+}
+
+.head-content-custom-design .tab.active::after {
+    width: 100%;
+}
+
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    height: 40px; /* Same height for uniformity */
+    background-color: var(--white);
+    /*border-radius: 10px;*/
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+    border: 5px solid var(--white);
+    border-top-width: 0px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    padding: 10px 20px;
+    justify-content: space-between;
+}
+
+
+.toolbar select {
+    padding: 5px;
+    margin-left: 10px;
+}
+.separator {
+    width: 1px;
+    height: 20px;
+    background-color: #ccc;
+    margin: 0 8px;
+}
+
+.home-tab, .page-tab {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    /* Space between elements */
+}
+
+.home-tab select,
+.page-tab select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.home-tab input[type="color"] {
+    width: 40px;
+    height: 25px;
+    border: none;
+    cursor: pointer;
+}
+
+.home-tab span {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.home-tab span i {
+    font-size: 18px;
+    color: #bbb;
+    /* Light ash color for inactive state */
+}
+
+.home-tab span.active i {
+    color: #000;
+    /* Black color for active state */
+}
+
+.home-tab span:hover i {
+    color: #000;
+}
+
+.home-tab label, .page-tab label, .settings-section label {
+    font-size: 14px;
+    margin-right: 4px;
+    margin-bottom: 0px;
+}
+
+    .home-tab input[type="text"],
+    .page-tab input[type="text"] {
+        width: 50px;
+        height: 25px;
+        /* Adjust width for the X and Y input boxes */
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+.home-tab input[type="text"]:focus,
+.page-tab input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.line-options {
+    display: none;
+    position: absolute;
+    background: #000000;
+    border: 1px solid #868585;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    padding: 5px;
+    z-index: 1000;
+    width: auto;
+    color: #ddd;
+    align-items: center;
+}
+
+.line-options div {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.line-options div:hover {
+    text-decoration: underline;
+}
+
+.line-options .label {
+    margin-left: 5px;
+    /* Adjust the space between the SVG and text */
+}
+
+.line-options .sub-options {
+    display: none;
+    position: absolute;
+    background: #000000;
+    border: 1px solid #868585;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    z-index: 1001;
+    width: 100px;
+    top: 0;
+    /* Adjust top to align with the parent element */
+    left: 100%;
+    /* Position to the right of the parent element */
+    margin-left: 5px;
+    /* Optional: Adjust space between the parent and the sub-options */
+}
+
+.line-options .sub-option {
+    padding: 5px;
+    cursor: pointer;
+}
+
+    .line-options .sub-option:hover {
+        text-decoration: underline;
+    }
+
+/* Show sub-options when hovering over #header-height */
+.line-options #header-height:hover .sub-options {
+    display: block;
+}
+
+.line-options #footer-height:hover .sub-options {
+    display: block;
+}
+
+.menu-bar-custom .controls {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.horizontal-line {
+    width: auto;
+    height: 1px;
+    background-color: #FFFFFF;
+    margin: 0 8px;
+    margin-bottom: 10px;
+}
+
+.controls .active {
+    border-radius: 5px;
+    background-color: var(--active-color);
+    font-weight: bold;
+    color: #1E201E; /* Active text color */
+    transform: scale(1.1); /* Slightly increase the size of the active tab */
+    justify-content: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.controls {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column; /* Ensure content stacks vertically */
+    justify-content: flex-start;
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 80vh; /* Ensure it doesn't exceed the viewport height */
+    padding: 10px; /* Optional: Add some padding */
+    box-sizing: border-box; /* Ensure padding is included in width/height calculations */
+}
+
+
+.settings-section select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size:10px;
+}
+
+label {
+    font-weight:normal;
+}
+
+.settings-section input[type="text"]{
+    width: 40px;
+    height: 25px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.content-custom-design {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-rows: auto 1fr; /* Rows: head-content-custom-design (auto), body-content-custom-design (flexible) */
+    gap: 10px; /* Adjust gap between rows as needed */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden;
+}
+
+.head-content-custom-design {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout for head-content */
+    grid-template-rows: auto auto; /* Rows: tabs (auto), toolbar (auto) */
+    background-color: #f5f5f5; /* Light background color for head-content */
+    padding: 10px;
+}
+
+.tabs {
+    grid-row: 1 / 2; /* Tabs occupy the first row */
+    display: flex;
+    gap: 10px;
+}
+
+.toolbar {
+    grid-row: 2 / 3; /* Toolbar occupies the second row */
+    display: flex;
+    align-items: center;
+    gap: 0px 5px 5px 0px;
+    padding: 5px;
+    background-color: var(--active-color);
+}
+
+.body-content-custom-design {
+    grid-row: 2 / 3; /* Body content occupies the second row */
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start; /* Default: Align content at the top */
+    background-color: #BDE8CA;
+    padding: 10px;
+    position: relative;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 10px;
+    margin-bottom: 50px;
+    width: 100%; /* Ensure the container has a fixed width */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    flex-shrink: 0; /* Prevent flex items from shrinking */
+}
+
+#fullscreenBtn, .fa-angle-right, .fa-angle-down,.page-setup-toggle ,.margin-toggle ,.border-toggle ,.padding-toggle , .zoom-controls label{
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+}
+
+.PrintArea{
+    font-size:12px;
+}
+
+.grid-template-section {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr; /* Adjust the columns as needed */
+    gap: 5px; /* Space between label and input/select */
+    align-items: center; /* Align label and input/select vertically */
+    margin-bottom: 5px; /* Space between each pair of label and input/select */
+}
+
+.grid-template-section label {
+    text-align: left;
+    margin-right: 5px; /* Space between the label and input/select */
+}
+
+.grid-template-section input[type="text"],
+.grid-template-section input[type="number"],
+.grid-template-section select {
+    width: 100%; /* Take full width of the right side column */
+    padding: 5px; /* Add some padding for better appearance */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.page-dimensions,.margin-settings-dropdown,.border-options,.padding-individual,.header-settings,.body-settings,.footer-settings {
+    background-color: #404140;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    padding: 10px;
+}
+.header-settings,.body-settings,.footer-settings{
+    font-size: small;
+}
+
+.properties-controls i {
+    opacity: 0.8;
+    zoom: 0.7;
+}
+
+.page-dimensions label, .margin-settings-dropdown label,.border-options label,.padding-individual label {
+    font-size: small;
+}
+
+.margin-settings-head, .border-settings, .padding-settings {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
